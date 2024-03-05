@@ -22,6 +22,7 @@ ok: [localhost] => {
 Тут подсмотрел запуск через докер:
 
  docker run -dit --name centos7 pycontribs/centos:7 sleep 6000000
+
  docker run -dit --name ubuntu pycontribs/ubuntu:latest sleep 6000000
 
 4. Проведите запуск playbook на окружении из prod.yml. Зафиксируйте полученные значения some_fact для каждого из managed host.
@@ -33,5 +34,17 @@ ok: [centos7] => {
 }
 ok: [ubuntu] => {
     "msg": "deb"
+}
+```
+
+5. Добавьте факты в group_vars каждой из групп хостов так, чтобы для some_fact получились значения: для deb — deb default fact, для el — el default fact.
+
+```
+TASK [Print fact] *****************
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
 }
 ```
