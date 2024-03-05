@@ -52,10 +52,44 @@ ok: [ubuntu] => {
 ```
 
 7. При помощи ansible-vault зашифруйте факты в group_vars/deb и group_vars/el с паролем netology.
+
 8. Запустите playbook на окружении prod.yml. При запуске ansible должен запросить у вас пароль. Убедитесь в работоспособности.
 
 ```
 TASK [Print fact] *****************
+ok: [centos7] => {
+    "msg": "el default fact"
+}
+ok: [ubuntu] => {
+    "msg": "deb default fact"
+}
+```
+
+9. Посмотрите при помощи ansible-doc список плагинов для подключения. Выберите подходящий для работы на control node.
+
+Видимо, имелось в виду вот это:
+
+```
+lebedev@nworkstation:~/homeworks/a01/ans-hw-01/playbook$ ansible-doc -t connection -l
+ansible.builtin.local          execute on controller
+```
+
+10. В prod.yml добавьте новую группу хостов с именем local, в ней разместите localhost с необходимым типом подключения.
+
+```
+local:
+    hosts:
+      localhost:
+          ansible_connection: ansible.builtin.local 
+```
+
+11. Запустите playbook на окружении prod.yml. При запуске ansible должен запросить у вас пароль. Убедитесь, что факты some_fact для каждого из хостов определены из верных group_vars.
+
+```
+TASK [Print fact] *****************
+ok: [localhost] => {
+    "msg": "all default fact"
+}
 ok: [centos7] => {
     "msg": "el default fact"
 }
